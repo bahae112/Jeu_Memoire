@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .jeu {
+            background-color: gray;
+            width: 50%;
+            height: 500px;
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .carte {
+            width: 70px;
+            height: 70px;
+            background-color: violet;
+            margin: 10px; 
+            display: inline-block; 
+        }
+        h1 {
+            margin-top: 30px;
+        }
+        img { visibility: hidden; }
+    </style>
+    <script>
+        $(document).ready(function() {
+            var images = ["archimede.jpg", "darwin.jpg", "descarte.jpg", "einstein.jpg", "ibnhaitam.jpg", "ibnsina.jpg", "newton.jpg", "pascal.jpg"];
+            var shuffledImages = [];
+            var clickedCards = [];
+            var pairsFound = 0;
+            var score = 0;
+        
+            function shuffleImages() {
+                shuffledImages = images.concat(images).sort(() => 0.5 - Math.random());
+                $('.carte img').each(function(index) {
+                    $(this).attr('src', shuffledImages[index]).css('visibility', 'hidden');
+                });
+            }
+        
+            function randomImages(card) {
+                var index = $(card).index('.carte');
+                $(card).find('img').css('visibility', 'visible');
+                clickedCards.push({ card: card, index: index });
+        
+                if (clickedCards.length === 2) {
+                    $(".carte").css("pointer-events", "none");
+        
+                    setTimeout(function () {
+                        if (shuffledImages[clickedCards[0].index] !== shuffledImages[clickedCards[1].index]) {
+                            $(clickedCards[0].card).find('img').css('visibility', 'hidden');
+                            $(clickedCards[1].card).find('img').css('visibility', 'hidden');
+                        } else {
+                            pairsFound++;
+                            if (pairsFound === images.length ) {
+                                alert("Félicitations, vous avez trouvé toutes les paires !");
+                            }
+                            score += 10;
+                            $("#score").text("Score: " + score);
+                        }
+                        clickedCards = [];
+                        $(".carte").css("pointer-events", "auto");
+                    }, 1000);
+                }
+            }
+        
+            shuffleImages(); // Mélangez les images au début du jeu
+            $('.carte').click(function() {
+                randomImages(this);
+            });
+        });
+    </script>
+    
+</head>
+<body>
+    <div class="jeu">
+        <center>
+        <h1>Jeu de memoire</h1>
+        <div class="ligne">
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image1"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image2"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image3"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image4"></div>
+        </div>
+        
+        <div class="ligne">
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image5"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image6"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image7"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image8"></div>
+        </div>
+
+        <div class="ligne">
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image9"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image10"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image11"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image12"></div>
+        </div>
+
+        <div class="ligne">
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image13"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image14"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image15"></div>
+            <div class="carte" onclick="randomImages(this)"><img src="" style="width:70px;height:70px" id="image16"></div>
+        </div>
+
+        <button onclick="calculateScore()">Calculer le score</button>
+        <p id="score">Score: 0</p>
+    </center>
+    </div> <!-- Fermeture du bloc .jeu -->
+
+    <script>
+        function calculateScore() {
+            alert("Votre score est de : " + score);
+        }
+    </script>
+</body>
+</html>
